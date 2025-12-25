@@ -1,59 +1,125 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- Elements ---
-    const openModalBtn = document.getElementById('openModalBtn');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    const cancelBtn = document.getElementById('cancelBtn');
-    const modal = document.getElementById('registerModal');
     const registerForm = document.getElementById('registerForm');
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const successMessage = document.getElementById('successMessage');
 
-    // --- Modal Logic ---
-    function openModal() {
-        modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden'; // Prevent background scrolling
-    }
+    // --- Validation Logic ---
+    const validators = {
+        email: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+        phone: (value) => /^\d{10,15}$/.test(value.replace(/\D/g, '')),
+        required: (value) => value.trim().length > 0
+    };
 
-    function closeModal() {
-        modal.classList.add('hidden');
-        document.body.style.overflow = '';
-    }
+    function validateField(input) {
+        const group = input.closest('.form-group');
+        const errorMsg = group.querySelector('.error-msg');
+        let isValid = true;
 
-    if (openModalBtn) {
-        openModalBtn.addEventListener('click', openModal);
-    }
+        // Reset state
+        input.classList.remove('input-error', 'input-success');
+        if (errorMsg) errorMsg.classList.add('hidden');
 
-    // Close on X btn, Cancel btn, or clicking outside
-    [closeModalBtn, cancelBtn].forEach(btn => {
-        if (btn) btn.addEventListener('click', closeModal);
-    });
-
-    window.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            closeModal();
+        // Check required
+        if (input.hasAttribute('required') && !validators.required(input.value)) {
+            isValid = false;
         }
-    });
 
-    // --- Form Handling ---
+        // Check specific types if value exists
+        if (isValid && input.value.trim() !== '') {
+            if (input.type === 'email' && !validators.email(input.value)) {
+                isValid = false;
+            }
+            if (input.type === 'tel' && !validators.phone(input.value)) {
+                isValid = false;
+            }
+        }
+
+        // Apply state
+        if (!isValid) {
+            input.classList.add('input-error');
+            if (errorMsg) errorMsg.classList.remove('hidden');
+        } else if (input.value.trim() !== '') {
+            input.classList.add('input-success');
+        }
+
+        return isValid;
+    }
+
     if (registerForm) {
-        registerForm.addEventListener('submit', (e) => {
+        // Validation Listeners
+        const inputs = registerForm.querySelectorAll('input[required], select[required], input[type="email"], input[type="tel"]');
+        inputs.forEach(input => {
+            input.addEventListener('blur', () => validateField(input));
+            input.addEventListener('input', () => {
+                input.classList.remove('input-error');
+                const group = input.closest('.form-group');
+                const errorMsg = group.querySelector('.error-msg');
+                if (errorMsg) errorMsg.classList.add('hidden');
+            });
+        });
+
+        // Form Submission
+        registerForm.addEventListener('submit', function (e) {
             e.preventDefault();
 
-            // Simulate API call / processing
-            const btn = registerForm.querySelector('button[type="submit"]');
-            const originalText = btn.innerText;
+            let formValid = true;
+            inputs.forEach(input => {
+                if (!validateField(input)) {
+                    formValid = false;
+                }
+            });
 
+            if (!formValid) {
+                const firstInvalid = registerForm.querySelector('.input-error');
+                if (firstInvalid) {
+                    firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    firstInvalid.focus();
+                }
+                return;
+            }
+
+            const btn = this.querySelector('button[type="submit"]');
+            const originalText = btn.innerText;
             btn.innerText = 'Registering...';
             btn.disabled = true;
 
-            setTimeout(() => {
-                // Success State
-                alert('Registration Successful! Check your email for the joining link.');
-                registerForm.reset();
-                closeModal();
-                btn.innerText = originalText;
-                btn.disabled = false;
-            }, 1500);
+            const payload = {
+                name: this.name.value,
+                email: this.email.value,
+                phone: this.phone.value,
+                status: this.status?.value || "",
+                college: this.college?.value || "",
+                course: this.course?.value || "",
+                branch: this.branch?.value || "",
+                passingYear: this.passingYear?.value || ""
+            };
+
+            fetch('https://script.google.com/macros/s/AKfycbyLNk141_7foJVFiAMjOu9PrC50LStJrqlxJbAOGq4l1wp59hXJyBbvBEvYRAbg4r_O/exec', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8'
+                },
+                body: JSON.stringify(payload)
+            })
+                .then(() => {
+                    registerForm.style.display = 'none';
+                    const header = document.querySelector('.register-header');
+                    if (header) header.style.display = 'none';
+
+                    if (successMessage) {
+                        successMessage.classList.remove('hidden');
+                        successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    this.reset();
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert('Submission failed. Please try again.');
+                    btn.innerText = originalText;
+                    btn.disabled = false;
+                });
         });
     }
 

@@ -54,7 +54,7 @@
                 Python Full Stack Developer and explore how Almanet’s course can help you achieve it.</h2>
             <div class="hero-meta-mobile">
                 <!-- Visible only on mobile/tablet to give immediate context -->
-                <span><i class="fa-regular fa-calendar"></i> Dec 27, 2025</span>
+                <span><i class="fa-regular fa-calendar"></i> 8–10 January 2026</span>
                 <span><i class="fa-regular fa-clock"></i> 1:00 PM EST</span>
             </div>
         </div>
@@ -138,6 +138,78 @@
                 </div>
             </section>
 
+            <!-- Registration Section (Inline) -->
+            <section class="section-block" id="register-section">
+                <div class="registration-container">
+                    <div class="register-header">
+                        <h3 class="section-title">Reserve Your Spot</h3>
+                        <p class="lead-text">Fill out the form below to secure your seat for this free webinar.</p>
+                    </div>
+
+                    <form id="registerForm" class="inline-form" novalidate>
+                        <!-- Fields are populated via HTML for structure, JS for validation -->
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label for="name">Full Name *</label>
+                                <input type="text" id="name" name="name" placeholder="John Doe" required>
+                                <span class="error-msg hidden">Please enter your full name.</span>
+                            </div>
+                            <div class="form-group half">
+                                <label for="email">Work Email *</label>
+                                <input type="email" id="email" name="email" placeholder="john@company.com" required>
+                                <span class="error-msg hidden">Please enter a valid email address.</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number *</label>
+                            <input type="tel" id="phone" name="phone" placeholder="9876543210" required maxlength="15">
+                            <span class="error-msg hidden">Please enter a valid phone number.</span>
+                        </div>
+
+                        <!-- Optional Fields Grid -->
+                        <div class="form-grid-3">
+                            <div class="form-group">
+                                <label for="status">Current Status</label>
+                                <select id="status" name="status">
+                                    <option value="" disabled selected>Select Status</option>
+                                    <option value="Student">Student</option>
+                                    <option value="Professional">Professional</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="college">College Name</label>
+                                <input type="text" id="college" name="college" placeholder="College Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="course">Course</label>
+                                <input type="text" id="course" name="course" placeholder="e.g. B.Tech">
+                            </div>
+                            <div class="form-group">
+                                <label for="branch">Branch</label>
+                                <input type="text" id="branch" name="branch" placeholder="e.g. CS">
+                            </div>
+                            <div class="form-group">
+                                <label for="passingYear">Passing Year</label>
+                                <input type="number" id="passingYear" name="passingYear" placeholder="2025" min="2000"
+                                    max="2030">
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary btn-block submit-btn">Confirm Registration</button>
+                        </div>
+                    </form>
+
+                    <div id="successMessage" class="success-message hidden">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <h4>Registration Successful!</h4>
+                        <p>You’re registered successfully. Webinar details will be shared via email.</p>
+                    </div>
+                </div>
+            </section>
+
         </main>
 
         <!-- Right Column: Sticky Sidebar -->
@@ -153,7 +225,7 @@
                         <i class="fa-regular fa-calendar-days"></i>
                         <div>
                             <span class="label">Date</span>
-                            <span class="value">December 27, 2025</span>
+                            <span class="value">8–10 January 2026</span>
                         </div>
                     </div>
                     <div class="detail-item">
@@ -203,9 +275,11 @@
                     </div>
 
                     <div class="card-actions">
-                        <a href="https://forms.gle/aQJudtcT6hjp5YA9A" target="_blank" class="btn-primary btn-block"
-                            style="text-decoration: none; text-align: center; display: block;">Register for the
-                            Webinar</a>
+                        <div style="text-align:center; margin-top: var(--space-md);">
+                            <a href="#register-section" class="scroll-trigger"
+                                style="display:inline-block; border:1px solid var(--border-color); border-radius: var(--radius-md); padding:8px 16px; text-decoration:none; color: var(--text-primary);">Register
+                                Now</a>
+                        </div>
                         <p class="seats-left"><i class="fa-solid fa-fire"></i> Few Spots Left!</p>
                     </div>
 
@@ -250,35 +324,7 @@
     </footer>
 
     <!-- Registration Modal -->
-    <div id="registerModal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <button class="modal-close" id="closeModalBtn">&times;</button>
-            <div class="modal-header">
-                <h3>Reserve Your Spot</h3>
-                <p>Reserve Your Spot to Learn the Full Stack Roadmap</p>
-            </div>
-            <form id="registerForm" class="modal-form">
-                <div class="form-group">
-                    <label for="fullname">Full Name *</label>
-                    <input type="text" id="fullname" name="fullname" placeholder="John Doe" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Work Email *</label>
-                    <input type="email" id="email" name="email" placeholder="john@company.com" required>
-                </div>
-                <div class="form-group">
-                    <label for="phone">Phone Number (Optional)</label>
-                    <input type="tel" id="phone" name="phone" placeholder="+1 234 567 8900">
-                </div>
-                <!-- Hidden Job Role Field (Honeypot/Optional) -->
 
-                <div class="form-actions">
-                    <button type="button" class="btn-secondary" id="cancelBtn">Cancel</button>
-                    <button type="submit" class="btn-primary">Confirm Registration</button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <script src="script.js"></script>
 </body>
