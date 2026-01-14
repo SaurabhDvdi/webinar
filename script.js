@@ -431,6 +431,45 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Networking strategies',
                 'Career guidance'
             ]
+        },
+        'sap-abap': {
+            title: 'SAP ABAP Training',
+            icon: 'fa-solid fa-gears',
+            description: 'Comprehensive SAP ABAP and ABAP on HANA training designed for beginners and professionals. Build real-world SAP development skills across reports, enhancements, interfaces, and modern HANA-optimized techniques.',
+            duration: '4–6 Months',
+            level: 'Beginner → Advanced',
+            topics: [
+                'ABAP fundamentals: data types, internal tables, modularization',
+                'Reports: classical, interactive ALV, and performance best practices',
+                'Enhancements: user exits, BAdIs, enhancement framework',
+                'OOABAP: classes, interfaces, patterns for maintainable code',
+                'Interfaces: IDoc, BAPI/RFC, Web Services & integrations',
+                'Workflows and approvals (overview and common scenarios)',
+                'ABAP on HANA: SQL pushdown concepts and performance tuning',
+                'CDS Views & basics of data modeling for S/4HANA',
+                'AMDP intro and when to use it',
+                'Debugging, transports, and production-ready practices'
+            ],
+            eligibility: 'Basic programming knowledge is helpful. Freshers and working professionals can enroll.',
+            tools: ['SAP GUI', 'ABAP Development Tools (ADT)', 'Eclipse (ADT)', 'S/4HANA concepts']
+        },
+        'salesforce-training': {
+            title: 'Salesforce Training',
+            icon: 'fa-brands fa-salesforce',
+            description: 'Practical Salesforce Admin and Developer training covering configuration, automation, security, and Lightning development so you can contribute to real CRM projects.',
+            duration: '3–4 Months',
+            level: 'Beginner → Intermediate',
+            topics: [
+                'Salesforce org setup, objects, fields, and relationships',
+                'User management, security model, profiles & permission sets',
+                'Automation with Workflow, Process Builder, and Flows',
+                'Reports, dashboards, and data management best practices',
+                'Apex basics: classes, triggers, and governor limits',
+                'Lightning Web Components fundamentals and component architecture',
+                'Deployment, sandboxes, and change set best practices'
+            ],
+            eligibility: 'Ideal for freshers and professionals interested in CRM, admin, or Salesforce developer roles. Basic programming or business process knowledge is helpful but not mandatory.',
+            tools: ['Salesforce Platform', 'Lightning App Builder', 'Apex', 'Lightning Web Components']
         }
     };
 
@@ -669,7 +708,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <option value="backend-python">Backend with Python & Django</option>
                     <option value="database-orm">Database & ORM</option>
                     <option value="frontend">Frontend Essentials</option>
+                    <option value="sap-abap">SAP ABAP Training</option>
                     <option value="professional">Professional Readiness</option>
+                    <option value="salesforce-training">Salesforce Training</option>
                 </select>
             `;
             
@@ -685,6 +726,30 @@ document.addEventListener('DOMContentLoaded', () => {
         if (courseSelectField && selectedCourse && courseData[selectedCourse]) {
             courseSelectField.value = selectedCourse;
         }
+    }
+
+    // --- Home Page Tabs (Projects section) ---
+    const homeTabButtons = document.querySelectorAll('.home-tab-button');
+    const homeTabPanels = document.querySelectorAll('.home-tab-panel');
+
+    if (homeTabButtons.length && homeTabPanels.length) {
+        homeTabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const target = button.getAttribute('data-tab');
+                if (!target) return;
+
+                homeTabButtons.forEach(b => b.classList.remove('active'));
+                button.classList.add('active');
+
+                homeTabPanels.forEach(panel => {
+                    if (panel.getAttribute('data-tab-panel') === target) {
+                        panel.classList.add('is-active');
+                    } else {
+                        panel.classList.remove('is-active');
+                    }
+                });
+            });
+        });
     }
 
 });
